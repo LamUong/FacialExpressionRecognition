@@ -13,7 +13,6 @@ import scipy.misc
 import scipy
 from scipy import ndimage
 import imutils
-
 import cv2
 import numpy as np
 from keras.preprocessing.image import ImageDataGenerator

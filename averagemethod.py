@@ -63,22 +63,6 @@ def model_generate():
 	model.summary()
 	return model
 
-def convertPercentTage(Array):
-	result = []
-	Sum = float(0)
-	for x in range(0,7):
-		Sum += float(Array[0][x])
-	for i in range(0,7): 
-		result.append(float(Array[0][i])/Sum)
-	return result
-
-def ConvertToArrayandReshape(List):
-	numpyarray = numpy.asarray(List)
-	numpyarray = numpyarray.reshape(1,48,48)
-	numpyarray = numpyarray.reshape(1, 1, 48, 48)
-	numpyarray = numpyarray.astype('float32')
-	return numpyarray
-
 def ConvertTo3DVolume(data):
 	img_rows, img_cols = 48, 48
 	test_set_x = numpy.asarray(data) 
@@ -87,61 +71,51 @@ def ConvertTo3DVolume(data):
 	test_set_x = test_set_x.astype('float32')
 	return test_set_x
 
+def predict_prob(number,test_set_x,model):
+	toreturn = []
+	for data5 in test_set_x:
+		if number ==0:
+			toreturn.append(dataprocessing.Flip(data5))
+		elif number ==1:
+			toreturn.append(dataprocessing.Roated15Left(data5))
+		elif number ==2:
+			toreturn.append(dataprocessing.Roated15Right(data5))
+		elif number ==3:
+			toreturn.append(dataprocessing.shiftedUp20(data5))
+		elif number ==4:
+			toreturn.append(dataprocessing.shiftedDown20(data5))
+		elif number ==5:
+			toreturn.append(dataprocessing.shiftedLeft20(data5))
+		elif number ==6:
+			toreturn.append(dataprocessing.shiftedRight20(data5))
+		elif number ==7:
+			toreturn.append(data5)
+	toreturn = ConvertTo3DVolume(toreturn)
+	proba = model.predict_proba(toreturn)
+	return proba
+
+
 model = model_generate()
-filepath='MPM.hdf5'
+filepath='MPM5.hdf5'
 model.load_weights(filepath)
 
 test_set_x, test_set_y = dataprocessing.load_test_data()
 
-'''
-proba = model.predict_proba(test_set_x, batch_size=3589)
-print(proba[0])
-proba = model.predict_proba(ConvertToArrayandReshape(prev_test_x[0]), batch_size=3589)
-print(proba)
-'''
-
-test_set_x_flip = []
-test_set_x_rotleft = []
-test_set_x_rotright = []
-test_set_x_shiftedup = []
-test_set_x_shifteddown = []
-test_set_x_shiftedright = []
-test_set_x_shifedleft = []
-
-for data5 in test_set_x:
-	test_set_x_flip.append(dataprocessing.Flip(data5))
-	test_set_x_rotleft.append(dataprocessing.Roated15Left(data5))
-	test_set_x_rotright.append(dataprocessing.Roated15Right(data5))
-	test_set_x_shiftedup.append(dataprocessing.shiftedUp20(data5))
-	test_set_x_shifteddown.append(dataprocessing.shiftedDown20(data5))
-	test_set_x_shifedleft.append(dataprocessing.shiftedLeft20(data5))
-	test_set_x_shiftedright.append(dataprocessing.shiftedRight20(data5))
-
-test_set_x_init = ConvertTo3DVolume(test_set_x)
-test_set_x_flip= ConvertTo3DVolume(test_set_x_flip)
-test_set_x_rotleft= ConvertTo3DVolume(test_set_x_rotleft)
-test_set_x_rotright = ConvertTo3DVolume(test_set_x_rotright)
-test_set_x_shiftedup = ConvertTo3DVolume(test_set_x_shiftedup)
-test_set_x_shifteddown = ConvertTo3DVolume(test_set_x_shifteddown)
-test_set_x_shifedleft = ConvertTo3DVolume(test_set_x_shifedleft)
-test_set_x_shiftedright = ConvertTo3DVolume(test_set_x_shiftedright)
-
-
-proba = model.predict_proba(test_set_x_init)
-proba1 = model.predict_proba(test_set_x_flip)
-proba2 = model.predict_proba(test_set_x_rotleft)
-proba3 = model.predict_proba(test_set_x_rotright)
-proba4 = model.predict_proba(test_set_x_shiftedup)
-proba5 = model.predict_proba(test_set_x_shifteddown)
-proba6 = model.predict_proba(test_set_x_shifedleft)
-proba7 = model.predict_proba(test_set_x_shiftedright)
+proba = predict_prob(0,test_set_x,model)
+proba1 = predict_prob(1,test_set_x,model)
+proba2 = predict_prob(2,test_set_x,model)
+proba3 = predict_prob(3,test_set_x,model)
+proba4 = predict_prob(4,test_set_x,model)
+proba5 = predict_prob(5,test_set_x,model)
+proba6 = predict_prob(6,test_set_x,model)
+proba7 = predict_prob(7,test_set_x,model)
 Out = []
 for row in zip(proba,proba1,proba2,proba3,proba4,proba5,proba6,proba7):
 	a = numpy.argmax(np.array(row).mean(axis=0))
 	Out.append(a)
 
-a = np.array(Out)
-b = np.array(test_set_y)
-c = np.sum(a == b)
-print((float(c)/len(Out)))
+Out = np.array(Out)
+test_set_y = np.array(test_set_y)
+c = np.sum(Out == test_set_y)
+print("Acc:"+str((float(c)/len(Out))))
 
