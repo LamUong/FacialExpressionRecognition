@@ -1,8 +1,8 @@
 # FacialExpressionRecognition
 
-This is my implementation of a convolutional neural network for facial expression recognition. 
+This is my implementation of a Convolutional Neural Network for Facial Expression Recognition. 
 
-I used the fer2013 dataset on Kaggle. The model has an accuracy of ~68% before using the averaging method and ~69% 
+I used the fer2013 dataset on Kaggle. The model has an accuracy of ~68% on the test set before using the averaging method and ~69% 
 after applying averaging method. 
 
 Due to limited time, I did not create an emsemble. An emsemble of multiple trained models using different initialization 
