@@ -22,3 +22,8 @@ I used C++ library Dlib for face detection.
 The Source Code for Django app: 
 https://github.com/LamUong/DjangoWithCNN
 
+I used several ideas in these papers to create my model:
+https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/icmi2015_ChaZhang.pdf
+http://www.cs.toronto.edu/~tang/papers/dlsvm.pdf
+
+
