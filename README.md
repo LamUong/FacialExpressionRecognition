@@ -13,3 +13,10 @@ To train the model using GPU simply run THEANO_FLAGS=mode=FAST_RUN,device=gpu,fl
 Different packages need to be installed. You can also used pre-installed Keras and Theano AMI on Amazon Web Services. Imutils, 
 OpenCV can be installed by pip and conda. They are used for the averaging method.
 
+An demonstration of the CNN:
+http://52.53.186.250/myapp/
+
+I used C++ library Dlib for face detection. 
+
+The Source Code for Django app: 
+
