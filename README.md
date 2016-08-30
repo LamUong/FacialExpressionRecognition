@@ -16,7 +16,7 @@ Different packages need to be installed. You can also used pre-installed Keras a
 OpenCV can be installed by pip and conda. They are used for the averaging method.
 
 An demonstration of the CNN:
-http://52.53.186.250/myapp/
+http://lamuong.com/myapp/
 
 I used C++ library Dlib for face detection. 
 
