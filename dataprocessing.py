@@ -9,6 +9,8 @@ from keras.regularizers import l2, activity_l2
 import cPickle 
 import numpy
 import csv
+import pandas
+import tk tkintr
 import scipy.misc
 import scipy
 from scipy import ndimage
@@ -65,6 +67,8 @@ def global_contrast_normalize(X, scale=1., subtract_mean=True, use_std=True,
 def ZeroCenter(data):
     data = data - numpy.mean(data,axis=0)
     return data
+data = data - numpy.mean(data,axis=1)
+return data
 
 def normalize(arr):
     for i in range(3):
@@ -185,3 +189,4 @@ def load_data():
                 val_x.append(data.reshape(2304).tolist())
 
     return train_x, train_y, val_x, val_y
+//gives trained value
